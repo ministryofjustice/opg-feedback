@@ -1,4 +1,4 @@
-FROM 311462405659.dkr.ecr.eu-west-1.amazonaws.com/opg-flask-apps/front-app:latest
+FROM 311462405659.dkr.ecr.eu-west-1.amazonaws.com/opg-flask-apps/front-app
 
 WORKDIR /frontapp
 
