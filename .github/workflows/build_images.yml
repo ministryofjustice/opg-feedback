@@ -92,3 +92,37 @@ jobs:
           RELEASE_BRANCHES: main
           WITH_V: true
 
+      - name: Push api docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: opg-feedback/rest-api
+        run: |
+          # TODO line below goes away once initial testing is finished, as we will only want main to tag as latest
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
+          if [ $BRANCH_NAME == "main" ]; then
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+            # We want all of the tags pushed
+            docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+          else
+          # TODO line below gets replaced with commented one below once testing is finished
+            docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+            #docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
+          fi
+
+      - name: Push front docker image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: opg-feedback/front-app
+        run: |
+          # TODO line below goes away once initial testing is finished, as we will only want main to tag as latest
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
+          if [ $BRANCH_NAME == "main" ]; then
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+            # We want all of the tags pushed
+            docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+          else
+          # TODO line below gets replaced with commented one below once testing is finished
+            docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
+            #docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
+          fi
+
