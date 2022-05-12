@@ -4,8 +4,8 @@ WORKDIR /restapi
 
 COPY rest-api .
 
-# append extra routes onto the original routes.py from opg-flask-apps
 RUN cat /restapi/app/extra_routes.py >> /restapi/app/routes.py
+RUN cat /restapi/app/__init__.py >> /restapi/app/__init__.py
 
 EXPOSE 8005
 CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8005", "--log-file", "-"]

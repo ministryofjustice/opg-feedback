@@ -15,3 +15,7 @@ def get_incomes():
 def add_income():
   incomes.append(request.get_json())
   return '', 204
+
+@app.route('/feedback', methods=['POST'])
+def post_feedback():
+    # create instance of Feedback object, save to db.  1st hardcode it, then take params
