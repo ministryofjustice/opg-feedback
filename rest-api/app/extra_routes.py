@@ -1,6 +1,6 @@
 import json
 import os
-
+from datetime import datetime
 from flask import request
 
 incomes = [
@@ -19,3 +19,6 @@ def add_income():
 @app.route('/feedback', methods=['POST'])
 def post_feedback():
     # create instance of Feedback object, save to db.  1st hardcode it, then take params
+    feedback = Feedback(rating = 1, comment = "service kicks ass", datetime = datetime.now())
+    app.db.session.add(feedback)
+    app.db.session.commit()
