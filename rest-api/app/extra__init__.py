@@ -1,6 +1,6 @@
-class Feedback(db.Model):
-    __table_name__ = 'perf_feedback',
-    id = db.Column('id', sa.Integer, primary_key=True),
-    rating = db.Column('rating', sa.Integer, nullable=False),
-    comment = db.Column('comment', sa.String(1200), nullable=False),
-    datetime = db.Column('datetime', sa.DateTime(), nullable=False)
+class Feedback(app.db.Model):
+    __tablename__ = 'perf_feedback',
+    id = app.db.Column('id', app.db.Integer, primary_key=True),
+    rating = app.db.Column('rating', app.db.Integer, nullable=False),
+    comment = app.db.Column('comment', app.db.String(1200), nullable=False),
+    datetime = app.db.Column('datetime', app.db.DateTime(), nullable=False)
