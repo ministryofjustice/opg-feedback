@@ -14,7 +14,6 @@ services:
   # ---------------------------
   # Create feedback table and db user for PerfPlat
   feedbackdb:
-    container_name: feedbackdb
     image: feedbackdb
     build:
       context: ./
@@ -40,6 +39,7 @@ services:
       dockerfile: ./rest-api/docker/app/Dockerfile
     depends_on:
       - postgres
+      - feedbackdb
     environment:
       AWS_XRAY_SDK_ENABLED: "false"
       POSTGRES_HOSTNAME: "postgres"
