@@ -34,4 +34,4 @@ def post_feedback():
   feedback = Feedback(rating = 1, comment = "Very happy with the service", datetime = datetime.now())
   app.db.session.add(feedback)
   app.db.session.commit()
-  return '', 204
+  return '', 201
