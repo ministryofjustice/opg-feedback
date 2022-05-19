@@ -52,7 +52,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/rest-api
         run: |
-          pip install wait-for-it
+          pip install wait-for-it pytest
           which wait-for-it
           docker-compose build
           docker tag rest-api $ECR_REGISTRY/$ECR_REPOSITORY
