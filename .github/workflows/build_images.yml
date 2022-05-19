@@ -59,7 +59,7 @@ jobs:
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/incomes -- echo "example incomes endpoint reached"
-          cd tests
+          cd rest-api/tests
           pytest
           docker-compose down
 
