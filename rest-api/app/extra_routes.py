@@ -10,11 +10,6 @@ class Feedback(app.db.Model):
     comment = app.db.Column('comment', app.db.String(1200), nullable=False)
     datetime = app.db.Column('datetime', app.db.DateTime(), nullable=False)
 
-    def __init__(self, rating, comment, datetime):
-        self.rating = rating
-        self.comment = comment
-        self.datetime = datetime
-
 incomes = [
   { 'description': 'salary', 'amount': 5000 }
 ]
