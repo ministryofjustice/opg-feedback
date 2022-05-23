@@ -54,7 +54,7 @@ jobs:
         run: |
           pip install wait-for-it pytest
           which wait-for-it
-          docker rmi opg-feedback_postgres_1
+          docker image prune -a -f
           docker-compose build
           docker tag rest-api $ECR_REGISTRY/$ECR_REPOSITORY
           docker-compose up -d
