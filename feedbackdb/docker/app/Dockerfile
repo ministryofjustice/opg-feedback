@@ -7,7 +7,7 @@ RUN pip install awscli psycopg2-binary sqlalchemy alembic
 
 RUN alembic init alembic
 
-COPY feedbackdb /app/
+COPY feedbackdb/ /app/
 
 WORKDIR /app
 
