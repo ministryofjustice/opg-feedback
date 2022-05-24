@@ -11,8 +11,8 @@ services:
       POSTGRES_USER: lpauser
       POSTGRES_PASSWORD: lpapass
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U lpauser"]
-      interval: 5s
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
       timeout: 5s
       retries: 5
 
@@ -24,7 +24,8 @@ services:
       context: ./
       dockerfile: feedbackdb/docker/app/Dockerfile
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       OPG_LPA_STACK_NAME: "local"
       OPG_LPA_STACK_ENVIRONMENT: "dev"
