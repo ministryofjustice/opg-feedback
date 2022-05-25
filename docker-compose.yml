@@ -11,7 +11,7 @@ services:
       POSTGRES_USER: lpauser
       POSTGRES_PASSWORD: lpapass
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready --username=lpauser --dbname=lpadb"]
       interval: 10s
       timeout: 5s
       retries: 5
