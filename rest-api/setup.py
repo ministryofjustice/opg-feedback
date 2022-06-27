@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-setup(name='feedbackapi', 
+setup(name='opgfeedbackapi', 
         version='1.0', 
         description='Feedback plugins for flask api',
-        packages=find_packages())
+        packages=[])

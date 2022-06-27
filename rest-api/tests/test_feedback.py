@@ -2,7 +2,7 @@ import json
 import requests
 import pytest
 import sys
-sys.path.append('../app:..')
+#sys.path.append('../app:..')
 from feedback import Feedback
 
 url = "http://localhost:8005"
