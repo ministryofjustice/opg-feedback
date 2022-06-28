@@ -43,7 +43,6 @@ services:
     build:
       context: ./
       dockerfile: ./rest-api/docker/app/Dockerfile
-        #dockerfile: ./demo/Dockerfile
     depends_on:
       - postgres
       - feedbackdb
@@ -56,4 +55,3 @@ services:
       POSTGRES_PASSWORD: "lpapass"
     ports:
       - 8005:8005
-

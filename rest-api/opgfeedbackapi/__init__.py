@@ -14,4 +14,4 @@ api = create_flask_app("feedback", postgres_url)
 
 # TODO for now just test simple incomes blueprint which has no deps,  once that works, do feedback blueprint too
 api.register_blueprint(incomes_blueprint)
-# api.register_blueprint(feedback_blueprint)
+api.register_blueprint(feedback_blueprint)
