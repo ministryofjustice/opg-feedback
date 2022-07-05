@@ -1,12 +1,12 @@
-from datetime import datetime
-from flask import current_app
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, DateTime
 
-app = current_app
+Base = declarative_base()
 
 
-class Feedback(app.db.Model):
+class Feedback(Base):
     __tablename__ = "perf_feedback"
-    id = app.db.Column("id", app.db.Integer, primary_key=True, autoincrement=True)
-    rating = app.db.Column("rating", app.db.Integer, nullable=False)
-    comment = app.db.Column("comment", app.db.String(200), nullable=False)
-    datetime = app.db.Column("datetime", app.db.DateTime(), nullable=False)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    rating = Column("rating", Integer, nullable=False)
+    comment = Column("comment", String(200), nullable=False)
+    datetime = Column("datetime", DateTime(), nullable=False)

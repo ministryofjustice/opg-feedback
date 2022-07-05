@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import current_app, Blueprint
 from .feedback import Feedback
 
@@ -10,6 +11,5 @@ def post_feedback():
     feedback = Feedback(
         rating=1, comment="Very happy with the service", datetime=datetime.now()
     )
-    current_app.db.session.add(feedback)
-    current_app.db.session.commit()
+    current_app.database.add(feedback)
     return "", 201

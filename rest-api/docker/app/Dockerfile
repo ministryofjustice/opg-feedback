@@ -1,5 +1,8 @@
 FROM python:3.9-alpine
 
+RUN addgroup -S opgfeedback && \
+    adduser -S -G opgfeedback opgfeedbackuser
+
 WORKDIR /restapi
 
 RUN apk update
@@ -14,7 +17,7 @@ RUN cd opg-flask-apps/flaskapi && pip install -e .
 
 RUN cd /restapi && python setup.py build && python setup.py install
 
-#ENV PYTHONPATH="/restapi/app:/restapi:$PYTHONPATH"
+USER opgfeedbackuser
 
 EXPOSE 8005
 CMD ["gunicorn", "opgfeedbackapi:api", "--bind", "0.0.0.0:8005", "--log-file", "-"]
