@@ -1,5 +1,5 @@
 name: build-images
-  
+
 on:
   push:
     branches:
@@ -26,7 +26,7 @@ jobs:
       actions: read
       contents: write
       security-events: write
-  
+
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
@@ -59,8 +59,9 @@ jobs:
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/incomes -- echo "example incomes endpoint reached"
+          wait-for-it -t 30 -s http://0.0.0.0:8005/feedback -- echo "feedback endpoint reached"
           cd rest-api/tests
-          pytest 
+          pytest
           #docker logs rest-api
           docker-compose down
 
@@ -75,7 +76,7 @@ jobs:
           docker run -d -p 8005:8005 -e "AWS_XRAY_SDK_ENABLED=false" $ECR_REGISTRY/$ECR_REPOSITORY
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           docker stop `docker ps | grep $ECR_REPOSITORY | awk '{print $NF}'`
-  
+
       - name: Build feedbackdb docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -154,4 +155,3 @@ jobs:
             docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
             #docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           fi
-

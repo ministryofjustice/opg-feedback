@@ -15,7 +15,9 @@ COPY rest-api .
 
 RUN cd opg-flask-apps/flaskapi && pip install -e .
 
-RUN cd /restapi && python setup.py build && python setup.py install
+#RUN cd /restapi && python setup.py build && python setup.py install
+
+RUN cd /restapi && pip install -e .
 
 USER opgfeedbackuser
 
