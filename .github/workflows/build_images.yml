@@ -60,7 +60,8 @@ jobs:
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/incomes -- echo "example incomes endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/feedback -- echo "feedback endpoint reached"
-          cd rest-api/tests
+          cd rest-api
+          pip install -e .
           pytest
           #docker logs rest-api
           docker-compose down
