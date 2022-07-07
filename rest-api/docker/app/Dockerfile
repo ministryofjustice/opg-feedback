@@ -9,13 +9,7 @@ RUN apk update
 
 RUN apk add git openssh build-base
 
-RUN git clone --branch lpal-421-library-for-api https://github.com/ministryofjustice/opg-flask-apps.git
-
 COPY rest-api .
-
-RUN cd opg-flask-apps/flaskapi && pip install -e .
-
-#RUN cd /restapi && python setup.py build && python setup.py install
 
 RUN cd /restapi && pip install -e .
 
