@@ -63,7 +63,7 @@ jobs:
           export POSTGRES_NAME=lpadb
           export POSTGRES_USERNAME=lpauser
           export POSTGRES_PASSWORD=lpapass
-          cd rest-api
+          cd feedbackapi
           pip install -e .
           pytest
           #docker logs rest-api
