@@ -37,7 +37,7 @@ services:
       OPG_LPA_POSTGRES_FEEDBACK_USERNAME: "feedbackuser"
       OPG_LPA_POSTGRES_FEEDBACK_PASSWORD: "feedbackpass"
 
-  feedbackapi:
+  feedback-rest-api:
     container_name: feedback-rest-api
     image: feedback-rest-api
     build:

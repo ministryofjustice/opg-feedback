@@ -55,7 +55,7 @@ jobs:
           pip install wait-for-it pytest
           which wait-for-it
           docker-compose build
-          docker tag feedbackapi $ECR_REGISTRY/$ECR_REPOSITORY
+          docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/incomes -- echo "example incomes endpoint reached"
