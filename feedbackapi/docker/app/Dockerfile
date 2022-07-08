@@ -3,7 +3,7 @@ FROM python:3.9-alpine
 RUN addgroup -S opgfeedback && \
     adduser -S -G opgfeedback opgfeedbackuser
 
-WORKDIR /restapi
+WORKDIR /feedbackapi
 
 RUN apk update
 
@@ -11,7 +11,7 @@ RUN apk add git openssh build-base
 
 COPY feedbackapi .
 
-RUN cd /restapi && pip install -e .
+RUN cd /feedbackapi && pip install -e .
 
 USER opgfeedbackuser
 
