@@ -60,6 +60,9 @@ jobs:
           wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/incomes -- echo "example incomes endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:8005/feedback -- echo "feedback endpoint reached"
+          export OPG_LPA_POSTGRES_NAME=lpadb
+          export OPG_LPA_POSTGRES_USERNAME=lpauser
+          export OPG_LPA_POSTGRES_PASSWORD=lpapass
           cd rest-api
           pip install -e .
           pytest
