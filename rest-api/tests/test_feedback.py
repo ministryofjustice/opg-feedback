@@ -4,7 +4,19 @@ import pytest
 import sys
 
 from opgfeedbackapi.feedback import Feedback
+from opgflaskapi import *
 
+import os
+
+# create feedback flask app to test against, pointing at local postgres instance
+postgres_uri = "postgresql://{}:{}@{}/{}".format(
+    os.getenv("POSTGRES_USERNAME"),
+    os.getenv("POSTGRES_PASSWORD"),
+    "localhost",
+    os.getenv("POSTGRES_NAME"),
+)
+
+api = create_flask_app("feedback", postgres_uri)
 url = "http://localhost:8005"
 
 
@@ -19,24 +31,35 @@ def test_healthcheck():
 
 def test_save_feedback():
 
-    test_data = {}
+    # test_data = {}
 
-    test_headers = {"Content-Type": "application/json"}
+    # test_headers = {"Content-Type": "application/json"}
 
     # ensure we don't already have saved data before we start the test
-    feedback = Feedback.query.filter_by(comment="Very happy with the service").all()
+    feedback = (
+        api.database.query(Feedback)
+        .filter(Feedback.comment == "Very happy with the service")
+        .all()
+    )
     assert len(feedback) == 0
 
+    # TODO this will be a post
     # r = requests.post(
     #    server.url + "/healthcheck", headers=test_headers, data=json.dumps(test_data)
     # )
+
+    # assert client.get("/feedback").status_code == 201
+    # client.get("/feedback")
 
     r = requests.get(url + "/feedback")
     assert r.status_code == 201
 
     # ensure we have exactly 1 comment saved
-    feedback = Feedback.query.filter_by(comment="Very happy with the service").all()
+    feedback = (
+        api.database.query(Feedback)
+        .filter(Feedback.comment == "Very happy with the service")
+        .all()
+    )
     assert len(feedback) == 1
 
-    db.session.delete(feedback)
-    db.session.commit()
+    api.database.delete(Feedback, feedback[0].id)
