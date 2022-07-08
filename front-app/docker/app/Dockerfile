@@ -16,4 +16,4 @@ COPY front-app .
 USER opgfeedbackuser
 
 EXPOSE 8005
-CMD ["gunicorn", "opgfeedbackapi:api", "--bind", "0.0.0.0:8005", "--log-file", "-"]
+#CMD ["gunicorn", "opgfeedbackapi:api", "--bind", "0.0.0.0:8005", "--log-file", "-"]

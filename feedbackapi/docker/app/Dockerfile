@@ -9,7 +9,7 @@ RUN apk update
 
 RUN apk add git openssh build-base
 
-COPY rest-api .
+COPY feedbackapi .
 
 RUN cd /restapi && pip install -e .
 

@@ -37,12 +37,12 @@ services:
       OPG_LPA_POSTGRES_FEEDBACK_USERNAME: "feedbackuser"
       OPG_LPA_POSTGRES_FEEDBACK_PASSWORD: "feedbackpass"
 
-  feedback-rest-api:
+  feedbackapi:
     container_name: feedback-rest-api
     image: feedback-rest-api
     build:
       context: ./
-      dockerfile: ./rest-api/docker/app/Dockerfile
+      dockerfile: ./feedbackapi/docker/app/Dockerfile
     depends_on:
       - postgres
       - feedbackdb
