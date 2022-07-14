@@ -11,10 +11,13 @@ def post_feedback():
     # create instance of Feedback object, save to db.
     content_type = request.headers.get("Content-Type")
     if content_type != "application/json":
-        return "Content-Type needs to be json", 500
+        return "Content-Type needs to be json", 400
 
     data = json.loads(request.data)
     print(data)
+
+    if not ("comment" in data and "rating" in data):
+        return "Missing data", 400
 
     feedback = Feedback(
         rating=data["rating"], comment=data["comment"], datetime=datetime.now()

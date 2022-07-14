@@ -30,9 +30,7 @@ def test_healthcheck():
 
 
 def test_save_feedback():
-
     test_data = {"rating": 1, "comment": "Very happy with the service"}
-
     test_headers = {"Content-Type": "application/json"}
 
     # ensure we don't already have saved data before we start the test
@@ -58,3 +56,33 @@ def test_save_feedback():
     assert len(feedback) == 1
 
     api.database.delete(Feedback, feedback[0].id)
+
+
+def test_save_feedback_with_data_but_missing_content_type():
+    test_data = {"rating": 1, "comment": "Very happy with the service"}
+
+    r = requests.post(url + "/feedback", data=json.dumps(test_data))
+
+    assert r.status_code == 400
+
+
+def test_save_feedback_with_missing_rating():
+    test_data = {"comment": "Very happy with the service"}
+    test_headers = {"Content-Type": "application/json"}
+
+    r = requests.post(
+        url + "/feedback", headers=test_headers, data=json.dumps(test_data)
+    )
+
+    assert r.status_code == 400
+
+
+def test_save_feedback_with_missing_comment():
+    test_data = {"rating": 1}
+    test_headers = {"Content-Type": "application/json"}
+
+    r = requests.post(
+        url + "/feedback", headers=test_headers, data=json.dumps(test_data)
+    )
+
+    assert r.status_code == 400
