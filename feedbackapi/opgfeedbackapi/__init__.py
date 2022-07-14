@@ -1,6 +1,5 @@
 import os
 from opgflaskapi import create_flask_app
-from .incomes_blueprint import incomes_blueprint
 
 postgres_uri = "postgresql://{}:{}@{}/{}".format(
     os.getenv("POSTGRES_USERNAME"),
@@ -13,5 +12,4 @@ api = create_flask_app("feedback", postgres_uri)
 
 from .feedback_blueprint import feedback_blueprint
 
-api.register_blueprint(incomes_blueprint)
 api.register_blueprint(feedback_blueprint)
