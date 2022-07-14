@@ -7,7 +7,6 @@ from opgfeedbackapi.feedback import Feedback
 from opgflaskapi import *
 
 import os
-from flask import client
 
 # create feedback flask app to test against, pointing at local postgres instance
 postgres_uri = "postgresql://{}:{}@{}/{}".format(
@@ -32,9 +31,9 @@ def test_healthcheck():
 
 def test_save_feedback():
 
-    # test_data = {}
+    test_data = {"rating": 1, "comment": "Very happy with the service"}
 
-    # test_headers = {"Content-Type": "application/json"}
+    test_headers = {"Content-Type": "application/json"}
 
     # ensure we don't already have saved data before we start the test
     feedback = (
@@ -44,16 +43,11 @@ def test_save_feedback():
     )
     assert len(feedback) == 0
 
-    # TODO this will be a post
-    # r = requests.post(
-    #    server.url + "/healthcheck", headers=test_headers, data=json.dumps(test_data)
-    # )
+    r = requests.post(
+        url + "/feedback", headers=test_headers, data=json.dumps(test_data)
+    )
 
-    # assert client.get("/feedback").status_code == 201
-    flask.client.get("/feedback")
-
-    # r = requests.get(url + "/feedback")
-    # assert r.status_code == 201
+    assert r.status_code == 201
 
     # ensure we have exactly 1 comment saved
     feedback = (
