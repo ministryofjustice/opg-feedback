@@ -65,7 +65,6 @@ jobs:
           cd feedbackapi
           pip install -e .
           pytest
-          #docker logs rest-api
           docker-compose down
 
       - name: Build and test front docker image
