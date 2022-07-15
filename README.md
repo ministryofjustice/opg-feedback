@@ -1,7 +1,7 @@
 # opg-feedback
 Development repository: Managed by opg-org-infra &amp; Terraform
 
-opg-feedback-apps provides a resuable component which will collect feedback from users, for the performance platform.  There is currently just an api. A front-end form using Jinja templates, is to follow shortly. The api library includes database connections (postgres supported so far), basic healthcheck, AWS xray, and will soon include authentication. The intended use is to have endpoints plugged in. (See [opg feedback repo](https://github.com/ministryofjustice/opg-feedback) for an example).
+opg-feedback-apps provides a re-usable component which will collect feedback from users, for the performance platform.  There is currently just an api. A front-end form using Jinja templates, is to follow shortly. The api library includes database connections (postgres supported so far), basic healthcheck, AWS xray, and will soon include authentication. The intended use is to have endpoints plugged in. (See [opg feedback repo](https://github.com/ministryofjustice/opg-feedback) for an example).
 
 ## Installation
 
