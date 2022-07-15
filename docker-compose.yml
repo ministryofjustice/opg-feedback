@@ -54,4 +54,4 @@ services:
       POSTGRES_USERNAME: "lpauser"
       POSTGRES_PASSWORD: "lpapass"
     ports:
-      - 8005:8005
+      - 9004:8005

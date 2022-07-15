@@ -17,7 +17,7 @@ postgres_uri = "postgresql://{}:{}@{}/{}".format(
 )
 
 api = create_flask_app("feedback", postgres_uri)
-url = "http://localhost:8005"
+url = "http://localhost:9004"
 
 
 def test_healthcheck():
