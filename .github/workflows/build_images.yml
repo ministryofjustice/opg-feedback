@@ -57,8 +57,8 @@ jobs:
           docker-compose build
           docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY
           docker-compose up -d
-          wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
-          wait-for-it -t 30 -s http://0.0.0.0:8005/feedback -- echo "feedback endpoint reached"
+          wait-for-it -t 30 -s http://0.0.0.0:9004/healthcheck -- echo "healthcheck endpoint reached"
+          wait-for-it -t 30 -s http://0.0.0.0:9004/feedback -- echo "feedback endpoint reached"
           export POSTGRES_NAME=lpadb
           export POSTGRES_USERNAME=lpauser
           export POSTGRES_PASSWORD=lpapass
