@@ -1,0 +1,13 @@
+FROM python:3.8-alpine
+
+RUN apk upgrade
+
+RUN pip install awscli psycopg2-binary sqlalchemy alembic
+
+RUN alembic init alembic
+
+COPY feedbackdb/ /app/
+
+WORKDIR /app
+
+CMD alembic upgrade head && python scripts/db/create_feedback_user.py
