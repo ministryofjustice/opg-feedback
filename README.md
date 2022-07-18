@@ -14,10 +14,19 @@ git clone https://github.com/ministryofjustice/opg-feedback.git
 cd opg-feedback
 ```
 
-### Install the Python library
+### Install the feedbackapi Python library
 
 Then, within a docker container or a virtualenv , do
 ```bash
 cd feedbackapi
 pip install -e .
 ```
+
+### Spin up the stack
+
+The stack, of 3 containers - postgres, feedbackdb which populates postgres, and feedbackapi,  can be started simply with:
+```bash
+docker-compose up
+```
+
+Running pytest should now run tests successfully, as long as the previous step of installing the feedbackapi python library has been done and the virtualenv is activated
