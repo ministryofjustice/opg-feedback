@@ -7,11 +7,14 @@ WORKDIR /feedbackapi
 
 RUN apk update
 
-RUN apk add git openssh build-base
+#i git is required to pip install feedback api as it has a depedency on a git repo
+RUN apk add git
 
 COPY feedbackapi .
 
 RUN cd /feedbackapi && pip install -e .
+
+RUN apk del git
 
 USER opgfeedbackuser
 
