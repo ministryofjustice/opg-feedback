@@ -14,7 +14,6 @@ def post_feedback():
         return "Content-Type needs to be json", 400
 
     data = json.loads(request.data)
-    print(data)
 
     if not ("comment" in data and "rating" in data):
         return "Missing data", 400
