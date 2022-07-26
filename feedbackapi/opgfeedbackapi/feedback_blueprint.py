@@ -8,15 +8,13 @@ import json
 auth = HTTPTokenAuth(scheme="Bearer")
 feedback_blueprint = Blueprint("feedback_blueprint", __name__)
 
-# TODO DO NOT MERGE - next coding step is to get the token from AWS secretsmanager
-tokens = {"secret-token-1": "john", "secret-token-2": "susan"}
-# tokens = get_secret()
+secret = get_secret()
 
 
 @auth.verify_token
 def verify_token(token):
-    if token in tokens:
-        return tokens[token]
+    if token == secret:
+        return token
 
 
 @feedback_blueprint.route("/feedback", methods=["POST"])

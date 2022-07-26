@@ -4,6 +4,7 @@ import pytest
 import sys
 
 from opgfeedbackapi.feedback import Feedback
+from opgfeedbackapi.get_secret import get_secret
 from opgflaskapi import *
 
 import os
@@ -21,7 +22,7 @@ url = "http://localhost:9004"
 
 # TODO DO NOT MERGE - next coding step is to get the token from AWS secretsmanager
 test_headers = {
-    "Authorization": "Bearer secret-token-1",
+    "Authorization": f"Bearer {get_secret()}",
     "Content-Type": "application/json",
 }
 
@@ -65,7 +66,7 @@ def test_save_feedback():
 
 def test_save_feedback_with_data_but_missing_content_type():
     test_data = {"rating": 1, "comment": "Very happy with the service"}
-    test_headers_without_content_type = {"Authorization": "Bearer secret-token-1"}
+    test_headers_without_content_type = {"Authorization": f"Bearer {get_secret()}"}
 
     r = requests.post(
         url + "/feedback",
