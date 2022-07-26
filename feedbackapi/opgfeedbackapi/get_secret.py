@@ -9,14 +9,12 @@ def assume_role_and_get_client():
         region_name="eu-west-1",
     )
 
-    if os.getenv("CYPRESS_CI"):
+    if os.getenv("FEEDBACK_CI"):
         print(" starting, Assuming CI role")
         role_arn = "arn:aws:iam::050256574573:role/opg-lpa-ci"
-        # role_arn = "arn:aws:iam::050256574573:role/moj_lpa_dev"
     else:
         print(" starting, Assuming operator role")
         role_arn = "arn:aws:iam::050256574573:role/operator"
-        # role_arn = "arn:aws:iam::050256574573:role/moj_lpa_dev"
 
     result = sts.assume_role(
         RoleArn=role_arn,
@@ -36,7 +34,6 @@ def assume_role_and_get_client():
 
 def get_secret():
     secret_name = "opg-flask-api-token"
-    # secret_name = "development/opg_lpa_admin_jwt_secret"
     client = assume_role_and_get_client()
 
     try:

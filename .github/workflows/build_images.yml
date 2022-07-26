@@ -54,6 +54,7 @@ jobs:
         run: |
           pip install wait-for-it pytest
           which wait-for-it
+          export FEEDBACK_CI=true
           docker-compose build
           docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY
           docker-compose up -d
