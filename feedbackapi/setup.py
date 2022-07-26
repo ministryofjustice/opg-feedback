@@ -7,6 +7,7 @@ setup(
     install_requires=[
         "opgflaskapi @ git+https://github.com/ministryofjustice/opg-flask-apps.git#subdirectory=flaskapi",
         "flask_httpauth",
+        "boto3",
     ],
     packages=[],
 )
