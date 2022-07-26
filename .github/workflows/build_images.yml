@@ -67,7 +67,7 @@ jobs:
           pytest
           docker-compose down
           #TODO temp test - can we talk to secrets mgr within github action using creds we assumed?
-          python3 get_secret.py
+          python3 opgfeedbackapi/get_secret.py
 
       - name: Build and test front docker image
         env:
