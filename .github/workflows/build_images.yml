@@ -37,7 +37,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ACTIONS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ACTIONS }}
           aws-region: eu-west-1
-          role-to-assume: arn:aws:iam::050256574573:role/operator
+          role-to-assume: arn:aws:iam::050256574573:role/opg-lpa-ci
           role-duration-seconds: 3600
           role-session-name: GitHubActions
 
@@ -45,8 +45,7 @@ jobs:
         run: |
           pip install wait-for-it pytest
           which wait-for-it
-          # TODO off for now
-          #export FEEDBACK_CI=true
+          export FEEDBACK_CI=true
           docker-compose build
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9004/healthcheck -- echo "healthcheck endpoint reached"
