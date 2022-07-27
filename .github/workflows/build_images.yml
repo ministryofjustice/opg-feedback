@@ -51,7 +51,6 @@ jobs:
           #python3 opgfeedbackapi/get_secret.py
 
       - name: Build and test front docker image
-        env:
         run: |
           pip install wait-for-it
           which wait-for-it
