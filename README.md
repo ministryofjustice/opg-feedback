@@ -24,9 +24,15 @@ pip install -e .
 
 ### Spin up the stack
 
-The stack, of 3 containers - postgres, feedbackdb which populates postgres, and feedbackapi,  can be started simply with:
+The stack, of 3 containers - postgres, feedbackdb which populates postgres, and feedbackapi,  can be started with:
 ```bash
-docker-compose up
+aws-vault exec moj-lpa-dev -- docker-compose up
 ```
+The requirement for aws-vault is because the Bearer Token for the api is stored in AWS Secrets Manager
 
-Running pytest should now run tests successfully, as long as the previous step of installing the feedbackapi python library has been done and the virtualenv is activated
+### Run the tests
+Having completed the steps above, it should now be possible to run the tests, with:
+```bash
+aws-vault exec moj-lpa-dev -- pytest
+```
+Again it is necessary to use aws-vault so that the test can get the secret from Secrets Manager to use against the test api
