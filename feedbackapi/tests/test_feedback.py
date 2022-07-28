@@ -35,6 +35,22 @@ def test_healthcheck():
     assert r.json() == expected_return
 
 
+def test_save_feedback_without_auth_token():
+    test_data = {
+        "rating": 1,
+        "comment": "Very happy with the service missing auth token",
+    }
+    test_headers_without_auth_token = {"Content-Type": "application/json"}
+
+    r = requests.post(
+        url + "/feedback",
+        headers=test_headers_without_auth_token,
+        data=json.dumps(test_data),
+    )
+
+    assert r.status_code == 401
+
+
 def test_save_feedback():
     test_data = {"rating": 1, "comment": "Very happy with the service"}
 
@@ -74,22 +90,6 @@ def test_save_feedback_with_data_but_missing_content_type():
     )
 
     assert r.status_code == 400
-
-
-def test_save_feedback_without_auth_token():
-    test_data = {
-        "rating": 1,
-        "comment": "Very happy with the service missing auth token",
-    }
-    test_headers_without_auth_token = {"Content-Type": "application/json"}
-
-    r = requests.post(
-        url + "/feedback",
-        headers=test_headers_without_auth_token,
-        data=json.dumps(test_data),
-    )
-
-    assert r.status_code == 401
 
 
 def test_save_feedback_with_missing_rating():
