@@ -20,6 +20,7 @@ def get_client():
 def get_secret():
     secret_name = "opg-flask-api-token"
     client = get_client()
+    secret_data = ""
 
     try:
         get_secret_value_response = client.get_secret_value(SecretId=secret_name)
