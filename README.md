@@ -33,6 +33,7 @@ The requirement for aws-vault is because the Bearer Token for the api is stored 
 ### Run the tests
 Having completed the steps above, it should now be possible to run the tests, with:
 ```bash
+export POSTGRES_NAME=lpadb POSTGRES_PASSWORD=lpapass POSTGRES_USERNAME=lpauser POSTGRES_HOSTNAME=postgres
 aws-vault exec moj-lpa-dev -- pytest
 ```
 Again it is necessary to use aws-vault so that the test can get the secret from Secrets Manager to use against the test api
