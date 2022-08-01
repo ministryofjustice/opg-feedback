@@ -17,7 +17,9 @@ def get_client():
     return client
 
 
-def get_secret(secret_name="opg-flask-api-token"):
+def get_secret(
+    secret_name="arn:aws:secretsmanager:eu-west-1:050256574573:secret:opg-flask-api-token",
+):
     client = get_client()
 
     get_secret_value_response = client.get_secret_value(SecretId=secret_name)
