@@ -17,8 +17,7 @@ def get_client():
     return client
 
 
-def get_secret():
-    secret_name = "opg-flask-api-token"
+def get_secret(secret_name="opg-flask-api-token"):
     client = get_client()
     secret_data = "NotFound"
 

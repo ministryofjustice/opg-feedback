@@ -44,7 +44,6 @@ jobs:
         run: |
           pip install wait-for-it pytest
           which wait-for-it
-          export FEEDBACK_CI=true
           docker-compose build
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9004/healthcheck -- echo "healthcheck endpoint reached"

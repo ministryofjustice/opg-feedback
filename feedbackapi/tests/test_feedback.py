@@ -26,6 +26,13 @@ test_headers = {
 }
 
 
+def test_get_secret_happy_path():
+    secret = get_secret()
+    assert secret is not None
+    assert secret != "NotFound"
+    assert secret != ""
+
+
 def test_healthcheck():
     expected_return = {"health": "healthy"}
 
