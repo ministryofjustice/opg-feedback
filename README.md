@@ -14,6 +14,13 @@ git clone https://github.com/ministryofjustice/opg-feedback.git
 cd opg-feedback
 ```
 
+### Make a virtualenv if needed
+If you are working in a docker container you can skip the virtualenv step, but if running locally, a virtualenv is helpful:
+```bash
+virtualenv ~/feedbackapienv
+source ~/feedbackapienv/bin/activate
+```
+
 ### Install the feedbackapi Python library
 
 Then, within a docker container or a virtualenv , do
@@ -21,6 +28,7 @@ Then, within a docker container or a virtualenv , do
 cd feedbackapi
 pip install -e .
 ```
+
 
 ### Spin up the stack
 
