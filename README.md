@@ -39,6 +39,13 @@ aws-vault exec moj-lpa-dev -- docker-compose up
 The requirement for aws-vault is because the Bearer Token for the api is stored in AWS Secrets Manager
 
 ### Run the tests
+To run the tests it is necessary to install requests and pytest in the virtual env:
+```bash
+pip install pytest requests
+```
+
+If you fail to do that step it may try to use an existing pytest from the system python and cause import falures
+
 Having completed the steps above, it should now be possible to run the tests, with:
 ```bash
 export POSTGRES_NAME=lpadb POSTGRES_PASSWORD=lpapass POSTGRES_USERNAME=lpauser POSTGRES_HOSTNAME=postgres
