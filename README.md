@@ -23,7 +23,7 @@ source ~/feedbackapienv/bin/activate
 
 ### Install the feedbackapi Python library
 
-Then, within a docker container or a virtualenv , do
+Then, within a docker container or the virtualenv created above, do
 ```bash
 cd feedbackapi
 pip install -e .
