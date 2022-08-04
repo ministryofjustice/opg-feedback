@@ -37,6 +37,7 @@ The stack, of 3 containers - postgres, feedbackdb which populates postgres, and 
 aws-vault exec moj-lpa-dev -- docker-compose up
 ```
 The requirement for aws-vault is because the Bearer Token for the api is stored in AWS Secrets Manager
+Note that the postgres container will be exposed on the standard 5432 port, so appear like a locally running postgres on the host. Before starting up, please ensure you do not already have a locally running postgres on standard 5432 port, otherwise tests will fail,
 
 ### Run the tests
 To run the tests it is necessary to install requests and pytest in the virtual env:

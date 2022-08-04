@@ -4,21 +4,29 @@ from botocore.exceptions import ClientError
 
 
 def get_client():
-    sts = boto3.client(
-        "sts",
-        region_name="eu-west-1",
-    )
 
     # the following relies upon AWS credentials being provided in the relevant env vars, for a role that has access to this particular secret
-    client = boto3.client(
-        "secretsmanager",
-    )
+
+    if "RUNNING_LOCALLY" in os.environ and int(os.getenv("RUNNING_LOCALLY")) == 1:
+        client = boto3.client(
+            "secretsmanager",
+            aws_access_key_id="accesskey",
+            aws_secret_access_key="secretkey",
+            region_name="eu-west-1",
+            verify=False,
+            endpoint_url="http://localstack:4566",
+        )
+    else:
+        client = boto3.client(
+            "secretsmanager",
+            region_name="eu-west-1",
+        )
 
     return client
 
 
 def get_secret(
-    secret_name="arn:aws:secretsmanager:eu-west-1:050256574573:secret:opg-flask-api-token",
+    secret_name="opg-flask-api-token",
 ):
     client = get_client()
 
