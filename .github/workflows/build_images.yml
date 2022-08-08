@@ -31,15 +31,6 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials For Terraform
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ACTIONS }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ACTIONS }}
-          aws-region: eu-west-1
-          role-duration-seconds: 3600
-          role-session-name: opg-lpa-ci
-
       - name: Build and test api and feedbackdb docker images
         run: |
           pip install wait-for-it pytest
@@ -73,9 +64,9 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ACTIONS }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ACTIONS }}
           aws-region: eu-west-1
-          role-to-assume: arn:aws:iam::311462405659:role/feedback-actions-ci
+          role-to-opg-lpa-ci: arn:aws:iam::311462405659:role/feedback-actions-ci
           role-duration-seconds: 3600
-          role-session-name: GitHubActions
+          role-session-name: opg-lpa-ci
 
       - name: ECR Login
         id: login-ecr
