@@ -53,6 +53,7 @@ jobs:
           export POSTGRES_PASSWORD=lpapass
           cd feedbackapi
           pip install -e .
+          export RUNNING_LOCALLY=1
           pytest
           docker-compose down
 
