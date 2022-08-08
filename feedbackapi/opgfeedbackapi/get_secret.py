@@ -7,14 +7,14 @@ def get_client():
 
     # the following relies upon AWS credentials being provided in the relevant env vars, for a role that has access to this particular secret
 
-    if "RUNNING_LOCALLY" in os.environ and int(os.getenv("RUNNING_LOCALLY")) == 1:
+    if "LOCAL_AWS_ENDPOINT" in os.environ and int(os.getenv("LOCAL_AWS_ENDPOINT")) == 1:
         client = boto3.client(
             "secretsmanager",
             aws_access_key_id="accesskey",
             aws_secret_access_key="secretkey",
             region_name="eu-west-1",
             verify=False,
-            endpoint_url="http://localstack:4566",
+            endpoint_url=os.getenv("LOCAL_AWS_ENDPOINT"),
         )
     else:
         client = boto3.client(
