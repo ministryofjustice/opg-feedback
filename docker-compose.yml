@@ -92,6 +92,6 @@ services:
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_SECURITY_TOKEN: ${AWS_SECURITY_TOKEN}
       # If running locally is set to 1, this will talk to localstack
-    LOCAL_AWS_ENDPOINT: http://localstack:4566
+      LOCAL_AWS_ENDPOINT: http://localstack:4566
     ports:
       - 9004:8005
