@@ -5,9 +5,8 @@ from botocore.exceptions import ClientError
 
 def get_client():
 
-    # the following relies upon AWS credentials being provided in the relevant env vars, for a role that has access to this particular secret
-
-    if "LOCAL_AWS_ENDPOINT" in os.environ and int(os.getenv("LOCAL_AWS_ENDPOINT")) == 1:
+    if "LOCAL_AWS_ENDPOINT" in os.environ:
+        # use localstack if instructed to by env var
         client = boto3.client(
             "secretsmanager",
             aws_access_key_id="accesskey",
@@ -17,6 +16,7 @@ def get_client():
             endpoint_url=os.getenv("LOCAL_AWS_ENDPOINT"),
         )
     else:
+        # the following relies upon AWS credentials being provided in the relevant env vars, for a role that has access to this particular secret
         client = boto3.client(
             "secretsmanager",
             region_name="eu-west-1",
