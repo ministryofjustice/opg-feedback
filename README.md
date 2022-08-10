@@ -14,19 +14,42 @@ git clone https://github.com/ministryofjustice/opg-feedback.git
 cd opg-feedback
 ```
 
+### Make a virtualenv if needed
+If you are working in a docker container you can skip the virtualenv step, but if running locally, a virtualenv is helpful:
+```bash
+virtualenv ~/feedbackapienv
+source ~/feedbackapienv/bin/activate
+```
+
 ### Install the feedbackapi Python library
 
-Then, within a docker container or a virtualenv , do
+Then, within a docker container or the virtualenv created above, do
 ```bash
 cd feedbackapi
 pip install -e .
 ```
 
+
 ### Spin up the stack
 
-The stack, of 3 containers - postgres, feedbackdb which populates postgres, and feedbackapi,  can be started simply with:
+The stack, of 3 containers - postgres, feedbackdb which populates postgres, and feedbackapi,  can be started with:
 ```bash
-docker-compose up
+aws-vault exec moj-lpa-dev -- docker-compose up
+```
+The requirement for aws-vault is because the Bearer Token for the api is stored in AWS Secrets Manager
+Note that the postgres container will be exposed on the standard 5432 port, so appear like a locally running postgres on the host. Before starting up, please ensure you do not already have a locally running postgres on standard 5432 port, otherwise tests will fail,
+
+### Run the tests
+To run the tests it is necessary to install requests and pytest in the virtual env:
+```bash
+pip install pytest requests
 ```
 
-Running pytest should now run tests successfully, as long as the previous step of installing the feedbackapi python library has been done and the virtualenv is activated
+If you fail to do that step it may try to use an existing pytest from the system python and cause import falures
+
+Having completed the steps above, it should now be possible to run the tests, with:
+```bash
+export POSTGRES_NAME=lpadb POSTGRES_PASSWORD=lpapass POSTGRES_USERNAME=lpauser POSTGRES_HOSTNAME=postgres
+aws-vault exec moj-lpa-dev -- pytest
+```
+Again it is necessary to use aws-vault so that the test can get the secret from Secrets Manager to use against the test api

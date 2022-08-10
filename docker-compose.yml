@@ -16,6 +16,37 @@ services:
       timeout: 5s
       retries: 5
 
+  localstack:
+    container_name: feedback-localstack
+    image: localstack/localstack:0.12.18
+    privileged: true
+    ports:
+      - 4563-4599:4563-4599
+    environment:
+      - SERVICES=secretsmanager
+      - DEFAULT_REGION=eu-west-1
+      - HOSTNAME=localstack
+      - DEBUG=1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/localstack:/tmp/localstack
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:4566/health?reload"]
+
+  # aws-cli creates the secret in localstack, for local running
+  aws-cli:
+    container_name: feedback-aws-cli
+    image: amazon/aws-cli:latest
+    stdin_open: true
+    tty: true
+    environment:
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ACCESS_KEY_ID=dummy
+    command: --region="eu-west-1" --endpoint-url="http://localstack:4566" secretsmanager create-secret --name opg-flask-api-token --secret-string "{\"test\":\"secret\",\"secret\":\"test\"}"
+    depends_on:
+      localstack:
+        condition: service_healthy
+
   # ---------------------------
   # Create feedback table and db user for PerfPlat
   feedbackdb:
@@ -46,6 +77,7 @@ services:
     depends_on:
       - postgres
       - feedbackdb
+      - aws-cli
     environment:
       AWS_XRAY_SDK_ENABLED: "false"
       POSTGRES_HOSTNAME: "postgres"
@@ -53,5 +85,12 @@ services:
       POSTGRES_NAME: "lpadb"
       POSTGRES_USERNAME: "lpauser"
       POSTGRES_PASSWORD: "lpapass"
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_SECURITY_TOKEN: ${AWS_SECURITY_TOKEN}
+      # when running locally using localstack, LOCAL_AWS_ENDPOINT can be set to this
+      LOCAL_AWS_ENDPOINT: http://localstack:4566
     ports:
       - 9004:8005

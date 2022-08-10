@@ -1,12 +1,24 @@
 from datetime import datetime
 from flask import current_app, Blueprint, request
+from flask_httpauth import HTTPTokenAuth
 from .feedback import Feedback
+from .get_secret import get_secret
 import json
 
+auth = HTTPTokenAuth(scheme="Bearer")
 feedback_blueprint = Blueprint("feedback_blueprint", __name__)
+
+secret = get_secret()
+
+
+@auth.verify_token
+def verify_token(token):
+    if token == secret:
+        return token
 
 
 @feedback_blueprint.route("/feedback", methods=["POST"])
+@auth.login_required
 def post_feedback():
     # create instance of Feedback object, save to db.
     content_type = request.headers.get("Content-Type")

@@ -4,6 +4,7 @@ import pytest
 import sys
 
 from opgfeedbackapi.feedback import Feedback
+from opgfeedbackapi.get_secret import get_secret
 from opgflaskapi import *
 
 import os
@@ -19,6 +20,17 @@ postgres_uri = "postgresql://{}:{}@{}/{}".format(
 api = create_flask_app("feedback", postgres_uri)
 url = "http://localhost:9004"
 
+test_headers = {
+    "Authorization": f"Bearer {get_secret()}",
+    "Content-Type": "application/json",
+}
+
+
+def test_get_secret_happy_path():
+    secret = get_secret()
+    assert secret is not None
+    assert secret != ""
+
 
 def test_healthcheck():
     expected_return = {"health": "healthy"}
@@ -29,9 +41,24 @@ def test_healthcheck():
     assert r.json() == expected_return
 
 
+def test_save_feedback_without_auth_token():
+    test_data = {
+        "rating": 1,
+        "comment": "Very happy with the service missing auth token",
+    }
+    test_headers_without_auth_token = {"Content-Type": "application/json"}
+
+    r = requests.post(
+        url + "/feedback",
+        headers=test_headers_without_auth_token,
+        data=json.dumps(test_data),
+    )
+
+    assert r.status_code == 401
+
+
 def test_save_feedback():
     test_data = {"rating": 1, "comment": "Very happy with the service"}
-    test_headers = {"Content-Type": "application/json"}
 
     # ensure we don't already have saved data before we start the test
     feedback = (
@@ -60,15 +87,19 @@ def test_save_feedback():
 
 def test_save_feedback_with_data_but_missing_content_type():
     test_data = {"rating": 1, "comment": "Very happy with the service"}
+    test_headers_without_content_type = {"Authorization": f"Bearer {get_secret()}"}
 
-    r = requests.post(url + "/feedback", data=json.dumps(test_data))
+    r = requests.post(
+        url + "/feedback",
+        headers=test_headers_without_content_type,
+        data=json.dumps(test_data),
+    )
 
     assert r.status_code == 400
 
 
 def test_save_feedback_with_missing_rating():
     test_data = {"comment": "Very happy with the service"}
-    test_headers = {"Content-Type": "application/json"}
 
     r = requests.post(
         url + "/feedback", headers=test_headers, data=json.dumps(test_data)
@@ -79,7 +110,6 @@ def test_save_feedback_with_missing_rating():
 
 def test_save_feedback_with_missing_comment():
     test_data = {"rating": 1}
-    test_headers = {"Content-Type": "application/json"}
 
     r = requests.post(
         url + "/feedback", headers=test_headers, data=json.dumps(test_data)

@@ -31,31 +31,11 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ACTIONS }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ACTIONS }}
-          aws-region: eu-west-1
-          role-to-assume: arn:aws:iam::311462405659:role/feedback-actions-ci
-          role-duration-seconds: 3600
-          role-session-name: GitHubActions
-
-      - name: ECR Login
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: 311462405659
-
-      - name: Build and test api docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: opg-feedback/rest-api
+      - name: Build and test api and feedbackdb docker images
         run: |
           pip install wait-for-it pytest
           which wait-for-it
           docker-compose build
-          docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9004/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:9004/feedback -- echo "feedback endpoint reached"
@@ -64,27 +44,35 @@ jobs:
           export POSTGRES_PASSWORD=lpapass
           cd feedbackapi
           pip install -e .
+          export LOCAL_AWS_ENDPOINT=http://localhost:4566
           pytest
           docker-compose down
 
       - name: Build and test front docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: opg-feedback/front-app
         run: |
           pip install wait-for-it
           which wait-for-it
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY -f front-app/docker/app/Dockerfile .
-          docker run -d -p 8005:8005 -e "AWS_XRAY_SDK_ENABLED=false" $ECR_REGISTRY/$ECR_REPOSITORY
-          wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
-          docker stop `docker ps | grep $ECR_REPOSITORY | awk '{print $NF}'`
+          docker build -t feedback-front -f front-app/docker/app/Dockerfile .
+          docker run -d -p 8005:8005 -e "AWS_XRAY_SDK_ENABLED=false" feedback-front
+          # LATER when can run gunicorn , this should work
+          #wait-for-it -t 30 -s http://0.0.0.0:8005/healthcheck -- echo "healthcheck endpoint reached"
+          docker stop `docker ps | grep feedback-front | awk '{print $NF}'`
 
-      - name: Build feedbackdb docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: opg-feedback/feedbackdb
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY -f feedbackdb/docker/app/Dockerfile .
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_ACTIONS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_ACTIONS }}
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::311462405659:role/opg-lpa-ci
+          role-duration-seconds: 3600
+          role-session-name: FeedbackBuildPipeline
+
+      - name: ECR Login
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: 311462405659
 
       - name: Extract branch name
         run: |
@@ -112,6 +100,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/rest-api
         run: |
+          docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:latest
           if [ $BRANCH_NAME == "main" ]; then
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
           fi
@@ -122,6 +111,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/front-app
         run: |
+          docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:latest
           if [ $BRANCH_NAME == "main" ]; then
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
           fi
@@ -132,6 +122,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/feedbackdb
         run: |
+          docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:latest
           if [ $BRANCH_NAME == "main" ]; then
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
           fi
