@@ -16,7 +16,7 @@ def get_client():
             endpoint_url=os.getenv("LOCAL_AWS_ENDPOINT"),
         )
     else:
-        # the following relies upon AWS credentials being provided in the relevant env vars, for a role that has access to this particular secret
+        # the following relies upon AWS credentials being provided in the environment, for a role that has access to this particular secret
         client = boto3.client(
             "secretsmanager",
             region_name="eu-west-1",

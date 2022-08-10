@@ -19,7 +19,6 @@ services:
   localstack:
     container_name: feedback-localstack
     image: localstack/localstack:0.12.18
-  # make the secret ahead of time needed by feedback-api for local testing
     privileged: true
     ports:
       - 4563-4599:4563-4599
@@ -34,6 +33,7 @@ services:
     healthcheck:
       test: ["CMD", "curl", "http://localhost:4566/health?reload"]
 
+  # aws-cli creates the secret in localstack, for local running
   aws-cli:
     container_name: feedback-aws-cli
     image: amazon/aws-cli:latest
@@ -42,7 +42,6 @@ services:
     environment:
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_ACCESS_KEY_ID=dummy
-        #command: --region="eu-west-1" --endpoint-url="http://localstack:4566" secretsmanager list-secrets
     command: --region="eu-west-1" --endpoint-url="http://localstack:4566" secretsmanager create-secret --name opg-flask-api-token --secret-string "{\"test\":\"secret\",\"secret\":\"test\"}"
     depends_on:
       localstack:
@@ -91,7 +90,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       AWS_SECURITY_TOKEN: ${AWS_SECURITY_TOKEN}
-      # If running locally is set to 1, this will talk to localstack
+      # when running locally using localstack, LOCAL_AWS_ENDPOINT can be set to this
       LOCAL_AWS_ENDPOINT: http://localstack:4566
     ports:
       - 9004:8005
