@@ -8,13 +8,13 @@ WORKDIR /feedbackapi
 RUN apk update
 
 #i git is required to pip install feedback api as it has a depedency on a git repo
-RUN apk add git
+RUN apk add git build-base
 
 COPY feedbackapi .
 
 RUN cd /feedbackapi && pip install -e .
 
-RUN apk del git
+RUN apk del git build-base
 
 USER opgfeedbackuser
 
