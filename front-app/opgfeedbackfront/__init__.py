@@ -1,0 +1,10 @@
+from flask import Flask
+from opgflaskfront import create_flask_app
+from .feedbackfront_blueprint import feedbackfront_blueprint
+
+
+def create_feedback_app(name: str, force_https=True) -> Flask:
+    app = create_flask_app("feedbackfront")
+
+    app.register_blueprint(feedbackfront_blueprint)
+    return app
