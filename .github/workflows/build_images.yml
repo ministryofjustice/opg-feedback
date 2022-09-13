@@ -54,12 +54,12 @@ jobs:
           which wait-for-it
           docker-compose build
           docker-compose up -d
-          #wait-for-it -t 30 -s http://0.0.0.0:9100/healthcheck -- echo "healthcheck endpoint reached"
+          wait-for-it -t 30 -s http://0.0.0.0:9100/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:9100/completed-feedback -- echo "feedback endpoint reached"
           docker-compose down
           cd front-app
           pip install -e .
-          pytest --cov=flaskfront flaskfront/tests
+          pytest
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
