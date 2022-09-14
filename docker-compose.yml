@@ -100,7 +100,7 @@ services:
     image: feedback-front
     build:
       context: ./
-      dockerfile: ./feedbackapi/docker/app/Dockerfile
+      dockerfile: ./front-app/docker/app/Dockerfile
     depends_on:
       - feedback-rest-api
     environment:
