@@ -56,6 +56,7 @@ jobs:
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9005/healthcheck -- echo "healthcheck endpoint reached"
           wait-for-it -t 30 -s http://0.0.0.0:9005/completed-feedback -- echo "feedback endpoint reached"
+          wait-for-it -t 30 -s http://0.0.0.0:9005/this-shouldnt-work -- echo "bogus endpoint reached"
           docker-compose down
           cd front-app
           pip install -e .
