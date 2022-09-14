@@ -106,4 +106,4 @@ services:
     environment:
       AWS_XRAY_SDK_ENABLED: "false"
     ports:
-      - 9100:8005
+      - 9005:8005
