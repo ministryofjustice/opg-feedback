@@ -10,4 +10,5 @@ setup(
         "gunicorn>=20.1.0,<21",
     ],
     packages=["opgfeedbackfront"],
+    include_package_data=True,
 )
