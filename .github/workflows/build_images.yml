@@ -55,7 +55,7 @@ jobs:
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9005/healthcheck -- echo "healthcheck endpoint reached"
           docker-compose down
-          cd front-app
+          cd feedbackfront
           pip install -e .
           pytest
 
