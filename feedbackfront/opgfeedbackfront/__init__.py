@@ -4,7 +4,8 @@ from .feedbackfront_blueprint import feedbackfront_blueprint
 
 
 def create_feedback_app(name: str, force_https=False) -> Flask:
-    app = create_flask_app("feedbackfront", force_https)
+    print(force_https)
+    app = create_flask_app("feedbackfront", force_https=force_https)
 
     app.register_blueprint(feedbackfront_blueprint)
     return app
