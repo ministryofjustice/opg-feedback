@@ -38,7 +38,6 @@ jobs:
           docker-compose build
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9004/healthcheck -- echo "healthcheck endpoint reached"
-          wait-for-it -t 30 -s http://0.0.0.0:9004/feedback -- echo "feedback endpoint reached"
           export POSTGRES_NAME=lpadb
           export POSTGRES_USERNAME=lpauser
           export POSTGRES_PASSWORD=lpapass
@@ -55,8 +54,6 @@ jobs:
           docker-compose build
           docker-compose up -d
           wait-for-it -t 30 -s http://0.0.0.0:9005/healthcheck -- echo "healthcheck endpoint reached"
-          wait-for-it -t 30 -s http://0.0.0.0:9005/completed-feedback -- echo "feedback endpoint reached"
-          wait-for-it -t 30 -s http://0.0.0.0:9005/this-shouldnt-work -- echo "bogus endpoint reached"
           docker-compose down
           cd front-app
           pip install -e .
