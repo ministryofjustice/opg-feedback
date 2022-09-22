@@ -33,7 +33,7 @@ jobs:
 
       - name: Build and test api and feedbackdb docker images
         run: |
-          pip install wait-for-it
+          pip install wait-for-it pytest
           which wait-for-it
           docker-compose build
           docker-compose up -d
