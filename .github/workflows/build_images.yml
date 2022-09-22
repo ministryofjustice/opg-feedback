@@ -49,7 +49,7 @@ jobs:
 
       - name: Build and test front docker image
         run: |
-          pip install wait-for-it pytest pytest-cov
+          pip install wait-for-it #pytest pytest-cov
           which wait-for-it
           docker-compose build
           docker-compose up -d
