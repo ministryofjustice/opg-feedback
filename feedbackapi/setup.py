@@ -9,5 +9,11 @@ setup(
         "flask_httpauth",
         "boto3",
     ],
-    packages=[],
+    extras_require={
+        "dev": [
+            "pytest",
+            "pytest-cov",
+        ],
+    },
+    packages=["opgfeedbackapi"],
 )

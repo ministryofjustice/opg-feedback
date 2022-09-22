@@ -94,3 +94,16 @@ services:
       LOCAL_AWS_ENDPOINT: http://localstack:4566
     ports:
       - 9004:8005
+
+  feedback-front:
+    container_name: feedback-front
+    image: feedback-front
+    build:
+      context: ./
+      dockerfile: ./feedbackfront/docker/app/Dockerfile
+    depends_on:
+      - feedback-rest-api
+    environment:
+      AWS_XRAY_SDK_ENABLED: "false"
+    ports:
+      - 9005:8005
