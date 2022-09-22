@@ -9,5 +9,11 @@ setup(
         "flask_httpauth",
         "boto3",
     ],
+    extras_require={
+        "dev": [
+            "pytest",
+            "pytest-cov",
+        ],
+    },
     packages=[],
 )
