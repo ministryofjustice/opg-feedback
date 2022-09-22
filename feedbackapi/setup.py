@@ -15,5 +15,5 @@ setup(
             "pytest-cov",
         ],
     },
-    packages=[],
+    packages=["opgfeedbackapi"],
 )
