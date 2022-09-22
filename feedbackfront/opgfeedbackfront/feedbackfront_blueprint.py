@@ -1,7 +1,4 @@
 from flask import Blueprint, render_template
-from flask import jsonify
-from flask import current_app
-import logging
 
 feedbackfront_blueprint = Blueprint("feedbackfront_blueprint", __name__)
 
