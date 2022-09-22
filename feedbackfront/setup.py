@@ -5,7 +5,7 @@ setup(
     version="1.0",
     description="Feedback plugins for flask app",
     install_requires=[
-        "opgflaskfront @ git+https://github.com/ministryofjustice/opg-flask-apps.git@LPAL-422-feedback#subdirectory=flaskfront",
+        "opgflaskfront @ git+https://github.com/ministryofjustice/opg-flask-apps.git#subdirectory=flaskfront",
         "govuk-frontend-wtf>=0.3.0",
         "gunicorn>=20.1.0,<21",
     ],
