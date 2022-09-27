@@ -45,7 +45,7 @@ To run the tests it is necessary to install requests and pytest in the virtual e
 pip install pytest requests
 ```
 
-If you fail to do that step it may try to use an existing pytest from the system python and cause import falures
+If you fail to do that step it may try to use an existing pytest from the system python and cause import failures
 
 Having completed the steps above, it should now be possible to run the tests, with:
 ```bash
