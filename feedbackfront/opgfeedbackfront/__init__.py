@@ -19,4 +19,5 @@ def create_feedback_app(name: str, force_https=False) -> Flask:
     )
 
     app.register_blueprint(feedbackfront_blueprint)
+    WTFormsHelpers(app)
     return app
