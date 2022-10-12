@@ -103,7 +103,9 @@ jobs:
         run: |
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+            docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+          else
+            docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
 
@@ -114,7 +116,9 @@ jobs:
         run: |
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+            docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+          else
+            docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
 
@@ -125,6 +129,8 @@ jobs:
         run: |
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+            docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+          else
+            docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
