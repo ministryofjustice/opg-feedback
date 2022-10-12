@@ -104,7 +104,6 @@ jobs:
           docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          else
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
 
