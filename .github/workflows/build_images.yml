@@ -87,7 +87,7 @@ jobs:
 
       - name: Bump version
         id: bump_version
-        uses: anothrNick/github-tag-action@1.33.0
+        uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INITIAL_VERSION: 1.0.0
@@ -101,9 +101,10 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/rest-api
         run: |
+          docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedback-rest-api $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
+          else
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
 
@@ -112,9 +113,9 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/front-app
         run: |
+          docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedback-front $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
 
@@ -123,8 +124,8 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: opg-feedback/feedbackdb
         run: |
+          docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.bump_version.outputs.tag }}
           if [ $BRANCH_NAME == "main" ]; then
             docker tag feedbackdb $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker tag $ECR_REGISTRY/$ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:main-${{ steps.bump_version.outputs.tag }}
           fi
           docker push --all-tags $ECR_REGISTRY/$ECR_REPOSITORY
